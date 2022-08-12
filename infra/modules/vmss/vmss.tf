@@ -1,11 +1,10 @@
 # VMSS
 #https://www.terraform.io/docs/providers/azurerm/r/linux_virtual_machine_scale_set.html
 
-resource "azurerm_linux_virtual_machine_scale_set" "tfrg" {
-
+resource "azurerm_linux_virtual_machine_scale_set" "demo08" {
   name                = "${var.resource.prefix}webvm"
   location            = var.resource.location
-  resource_group_name = azurerm_resource_group.tfrg.name
+  resource_group_name = var.resource_group_name
 
   upgrade_mode        = "Automatic"
   /*automatic_os_upgrade_policy = {
@@ -115,6 +114,3 @@ resource "azurerm_lb_probe" "vmss" {
 }
 
 
-output "vmss_ip_address" {
-  value = azurerm_public_ip.vmss.ip_address
-}

@@ -1,22 +1,25 @@
-# This a examples from "https://github.com/hashicorp/terraform-provider-azurerm/tree/main/examples"
+variable "base_name" {
+    type = string
+    description = "The storage accuont base name"
+}
 
-variable "resource_group" {
-  description = "The name of the resource group in which to create the virtual network."
-  default = "rg-eus-test10"   
+variable "resource_group_name" {
+    type = string
+    description = "Name of the resource group"
 }
 
 variable "location" {
-  description = "The name of the location name in which to create the virtual network."
-  default = "eastus"    #koreacentral, koreasouth
+    type = string
+    description = "The location for the deployment"
 }
 
 variable "default_tags" {
   description = "please define a tag name like date, role, environment and etc"
     type = map(string)
     default = {
-        envrionment = "test"
-        datetime = "2022.01.19 13:00",
-        owner   = "gslim"
+        Envrionment = "test",
+        datetime  = "2022.08.12 22:30",
+        Creator   = "gslim"
     }
 }
 
