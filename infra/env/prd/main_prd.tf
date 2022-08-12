@@ -15,16 +15,16 @@ terraform {
       version = ">= 3.3.2"
     }
   }
-    #backend "azurerm" {
-    #    resource_group_name  = "cloud-shell-storage-southeastasia"
-    #    storage_account_name = "cs11003200094ea6d93"
-    #    container_name       = "tfstate"
-    #    key                  = "terraform_3tier.tfstate"
-    #}
+    backend "azurerm" {
+        resource_group_name  = "RG-tfstate-20220812"
+        storage_account_name = "tfstatekczbn"
+        container_name       = "tfstate"
+        key                  = "terraform_tfwk.tfstate"
+    }
     # Use backed locally first. Commenting out this after configuring remote backend.
-    backend "local" {
-      path = "./terraform.tfstate"
-    } 
+    #backend "local" {
+    #  path = "./terraform.tfstate"
+    #} 
 }
 
 provider "azurerm" {
@@ -40,32 +40,33 @@ provider "azurerm" {
   #client_secret     = "<service_principal_password>"  #노출되지 않도록 구성
 }
 
-/*backend 설정전에 스토리지가 먼저 만들어져야 한다.
-# Generate random text for a unique storage account name
-resource "random_id" "randomId" {
-    keepers = {
-        # Generate a new ID only when a new resource group is defined
-        resource_group = azurerm_resource_group.ggResourcegroup.name
-    }
+#backend 설정전에 스토리지가 먼저 만들어져야 한다.
 
-    byte_length = 8
+locals {
+  name = "${formatdate("YYYYMMDD",timestamp())}${terraform.workspace}"
+  #tags = merge(var.tags, {"env" = terraform.workspace, "app" = local.name})
 }
 
-# Create storage account for terraform status information
-resource "azurerm_storage_account" "tfstate" {
-    name                        = "tfstate${random_id.randomId.hex}"
-    resource_group_name         = azurerm_resource_group.ggResourcegroup.name
-    location                    = var.location
-    account_tier                = "Standard"
-    account_replication_type    = "LRS"
-    #allow_blob_public_access    = true
-
-    tags = var.default_tags
+# Create a resource group / you have tp change the name and location
+resource "azurerm_resource_group" "demo08" {
+  name     = "${var.resource_group_name}-${local.name}"
+  location = var.location
+  tags = {
+    created = "${timeadd(timestamp(),"9h")}"
+    owner = "gslim"
+  }
 }
 
-resource "azurerm_storage_container" "tfstate" {
-  name                  = "tfstate"
-  storage_account_name  = azurerm_storage_account.tfstate.name
-  container_access_type = "blob"
+module "storage" {
+  source = "../../modules/storage"
+  base_name = "${terraform.workspace}"
+  resource_group_name = azurerm_resource_group.demo08.name
+  location = var.location
 }
-*/
+
+module "network" {
+  source = "../../modules/vnet"
+  base_name = "${terraform.workspace}"
+  resource_group_name = azurerm_resource_group.demo08.name
+  location = var.location
+}

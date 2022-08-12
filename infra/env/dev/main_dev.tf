@@ -16,8 +16,8 @@ terraform {
     }
   }
     backend "azurerm" {
-        resource_group_name  = "cloud-shell-storage-southeastasia"
-        storage_account_name = "cs11003200094ea6d93"
+        resource_group_name  = "RG-tfstate-20220812"
+        storage_account_name = "tfstatekczbn"
         container_name       = "tfstate"
         key                  = "terraform_tfwk.tfstate"
     }
@@ -40,21 +40,11 @@ provider "azurerm" {
   #client_secret     = "<service_principal_password>"  #노출되지 않도록 구성
 }
 
-/*backend 설정전에 스토리지가 먼저 만들어져야 한다.
-# Generate random text for a unique storage account name
-resource "random_id" "randomId" {
-    keepers = {
-        # Generate a new ID only when a new resource group is defined
-        resource_group = azurerm_resource_group.ggResourcegroup.name
-    }
-
-    byte_length = 8
-}
-*/
+#backend 설정전에 스토리지가 먼저 만들어져야 한다.
 
 locals {
   name = "${formatdate("YYYYMMDD",timestamp())}${terraform.workspace}"
-  tags = merge(var.tags, {"env" = terraform.workspace, "app" = local.name})
+  #tags = merge(var.tags, {"env" = terraform.workspace, "app" = local.name})
 }
 
 # Create a resource group / you have tp change the name and location
@@ -67,7 +57,7 @@ resource "azurerm_resource_group" "demo08" {
   }
 }
 
-module "storageaccount" {
+module "storage" {
   source = "../../modules/storage"
   base_name = "${terraform.workspace}"
   resource_group_name = azurerm_resource_group.demo08.name

@@ -2,7 +2,7 @@
 
 variable "resource_group_name" {
   description = "The name of the resource group in which to create the virtual network."
-  default = "rg-eus-test16"   
+  default = "rg-demo08"   
 }
 
 variable "location" {
@@ -15,20 +15,10 @@ variable "default_tags" {
     type = map(string)
     default = {
         Envrionment = "test",
-        datetime  = "2022.07.17 14:00",
+        datetime  = "2022.08.12 22:30",
         Creator   = "gslim"
     }
 }
-
-variable "tfstate_rg_name" {
-  description = "The name of the resource group which to create terraform tfstate."
-  default = "cloud-shell-storage-southeastasia"   
-}
-variable "tfstate_storage_name" {
-  description = "The name of the storage account in which to create terraform tfstate."
-  default = "cs11003200094ea6d93"
-}
-
 
 variable "instances_num" {
   description = "Specify the number of vm instances."
@@ -58,7 +48,7 @@ variable "admin_usernameW" {
 
 variable "admin_password" {
   description = "administrator password (recommended to disable password auth)"
-  default     = "gs1234!@#$"
+  default     = "gspassword"
 }
 
 variable "hostname" {

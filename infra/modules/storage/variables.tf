@@ -1,7 +1,3 @@
-variable "terraform_workspace" {
-    type = string
-    description = "The storage accuont base name"
-}
 
 variable "base_name" {
     type = string

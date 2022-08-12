@@ -7,7 +7,7 @@ resource "random_string" "random" {
 }
 
 resource "azurerm_storage_account" "demo08" {
-  name                     = "${lower(var.terraform.workspace)}${random_string.random.result}"
+  name                     = "${lower(var.base_name)}${random_string.random.result}"
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
