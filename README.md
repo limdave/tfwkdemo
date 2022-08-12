@@ -35,3 +35,4 @@
 9. vscode 와 github 연동 관련 : https://webnautes.tistory.com/1422
 Visual Studio Code에서 Github에 업로드하는 방법
 개발 환경/Visual Studio Code / webnautes / 2022. 3. 17. 21:59
+token 기반 인증으로 함 - 유효기간 2022년말.
